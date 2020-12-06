@@ -1,6 +1,7 @@
 package com.jh.vlog.service;
 
 import com.jh.vlog.model.dto.LoginDto;
+import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.entity.User;
 
 /**
@@ -23,4 +24,18 @@ public interface UserService {
      * @return
      */
     User getUser(String phone);
+
+    /**
+     * 手机短信验证码登录
+     * @param phoneLoginDto
+     * @return
+     */
+    boolean phoneLogin(PhoneLoginDto phoneLoginDto);
+
+    /**
+     * 修改用户信息
+     * @param user
+     * @return
+     */
+    User updateUser(User user);
 }

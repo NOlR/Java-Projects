@@ -117,16 +117,9 @@
 				if(!this.validate()) return;
 				//请求数据
 				this.$H
-					.post('./user/sendcode',
-					{
-						phone:this.phone
-					},{
+					.post('/user/sendcode?phone='+this.phone,{
 						native:true
 					}).then(res=>{
-						uni.showToast({
-							title:res.data.msg,
-							icon:'none'
-						});
 						//倒计时
 						this.codeTime = 60;
 						let timer = setInterval(()=>{

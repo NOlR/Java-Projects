@@ -3,6 +3,8 @@ package com.jh.vlog.controller;
 import com.jh.vlog.common.ResponseResult;
 import com.jh.vlog.common.ResultCode;
 import com.jh.vlog.model.dto.LoginDto;
+import com.jh.vlog.model.dto.PhoneLoginDto;
+import com.jh.vlog.model.entity.User;
 import com.jh.vlog.service.RedisService;
 import com.jh.vlog.service.UserService;
 import com.jh.vlog.utils.SmsUtil;
@@ -51,12 +53,31 @@ public class UserController {
         //给入参手机号发送短信
         boolean flag = smsUtil.sendSms(phone,code);
         if (flag){
-            //验证码存入redis,5分钟有效
-            redisService.set(phone,code,5L);
+            //验证码存入redis,1分钟有效
+            redisService.set(phone,code,1L);
             return ResponseResult.success(code);
         }else {
-            redisService.set(phone,code,5L);
+            redisService.set(phone,code,1L);
             return ResponseResult.failure(ResultCode.SMS_ERROR);
         }
+    }
+
+    @PostMapping(value = "/phonelogin")
+    public ResponseResult login(@RequestBody PhoneLoginDto phoneLoginDto){
+        log.info("phoneLoginDto:"+phoneLoginDto);
+        boolean flag = userService.phoneLogin(phoneLoginDto);
+        if (flag){
+            return  ResponseResult.success(userService.getUser(phoneLoginDto.getPhone()));
+        }else {
+            return ResponseResult.failure(ResultCode.USER_VERIFY_CODE_ERROR);
+        }
+
+    }
+
+    @PostMapping(value = "/update")
+    public ResponseResult update(@RequestBody User user){
+        log.info("user:"+user);
+        User newUser = userService.updateUser(user);
+        return ResponseResult.success(newUser);
     }
 }

@@ -21,6 +21,12 @@ export default new Vuex.Store({
 			state.user = user
 			state.token = state.user.token
 			uni.setStorageSync('user',JSON.stringify(user));
+		},
+		logout(state){
+			state.loginStatus = false
+			state.user={}
+			state.token = false
+			uni.removeStorageSync('user');
 		}
 	},
 	actions: {

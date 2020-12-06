@@ -1,10 +1,7 @@
 package com.jh.vlog.mapper;
 
 import com.jh.vlog.model.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.SQLException;
 
@@ -20,8 +17,8 @@ public interface UserMapper {
      * @param user 入参user对象
      * @throws SQLException
      */
-    @Insert("INSERT INTO t_user (phone,password,nickname,avatar,gender,birthday,address,create_time)"+
-    "VALUES (#{phone},#{password},#{nickname},#{avatar},#{gender},#{birthday},#{address},#{createTime})")
+    @Insert("INSERT INTO t_user (phone,nickname,avatar,create_time)"+
+    "VALUES (#{phone},#{nickname},#{avatar},#{createTime})")
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void insert(User user)throws SQLException;
 
@@ -34,5 +31,7 @@ public interface UserMapper {
             "</script>"})
     User findUserByPhone(@Param("phone") String phone) throws SQLException;
 
-
+    @Update("UPDATE t_user SET password=#{password},nickname=#{nickname},avatar=#{avatar},gender=#{gender},birthday=#{birthday},address=#{address}"+
+    "WHERE phone=#{phone}")
+    void updataUser(User user) throws SQLException;
 }
