@@ -1,10 +1,10 @@
 <template>
 	<view>
 		<template v-if="loginStatus">
-			<uni-list-item title="账号与安全"></uni-list-item>
+			<uni-list-item title="账号与安全" @click="open('user-safe')"></uni-list-item>
 			<uni-list-item title="资料编辑" @click="open('user-info')"></uni-list-item>
 		</template>
-		<uni-list-item title="清楚缓存" @click="clear()">
+		<uni-list-item title="清除缓存" @click="clear()">
 			<view slot="right"class="text-muted">{{currentSize|format}}</view>
 		</uni-list-item>
 		<uni-list-item v-if="loginStatus" title="意见反馈" @click="open('user-feedback')"></uni-list-item>

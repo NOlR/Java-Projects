@@ -99,6 +99,11 @@
 				uni.navigateTo({
 					url:'../login/login'
 				})
+			},
+			userSet(){
+				uni.navigateTo({
+					url:"../user-set/user-set"
+				})
 			}
 		}
 	}
