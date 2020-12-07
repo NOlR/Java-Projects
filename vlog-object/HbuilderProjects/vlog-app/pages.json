@@ -125,6 +125,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/change-psd/change-psd",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改密码"
+                
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
