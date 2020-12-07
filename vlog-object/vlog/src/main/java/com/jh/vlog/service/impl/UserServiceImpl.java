@@ -1,18 +1,26 @@
 package com.jh.vlog.service.impl;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import com.jh.vlog.mapper.UserMapper;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.entity.User;
 import com.jh.vlog.service.RedisService;
 import com.jh.vlog.service.UserService;
+import com.jh.vlog.utils.AliyunResource;
+import com.jh.vlog.utils.FileResource;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @ClassName UserServiceImpl
@@ -26,6 +34,10 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Resource
     private RedisService redisService;
+    @Resource
+    private AliyunResource aliyunResource;
+    @Resource
+    private FileResource fileResource;
 
     @Override
     public boolean login(LoginDto loginDto) {
@@ -60,9 +72,9 @@ public class UserServiceImpl implements UserService {
                 //查找数据库该手机用户是否存在
                 User user = getUser(phoneLoginDto.getPhone());
                 //存在就登录成功
-                if (user != null){
+                if (user != null) {
                     return true;
-                }else {
+                } else {
                     //不存在该手机号,就构建新用户记录,补充比被子短写入数据库,一件注册并登录（密码留空，用户可后期修改）
                     User user1 = User.builder()
                             .phone(phoneLoginDto.getPhone())
@@ -100,5 +112,34 @@ public class UserServiceImpl implements UserService {
         }
         //将修改后的用户信息返回
         return savedUser;
+    }
+
+    @Override
+    public String uploadFile(MultipartFile file) {
+        //读入配置文件
+        String endpoint = fileResource.getEndpoint();
+        String accessKeyId = aliyunResource.getAccessKeyId();
+        String accessKeySecret = aliyunResource.getAccessKeySecret();
+        //创建OSSClient实例
+        OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
+        String fileName = file.getOriginalFilename();
+        //分割文件名，获取文件后缀名
+        assert fileName!=null;
+        String[] fileNameArr = fileName.split("\\.");
+        String suffix = fileNameArr[fileNameArr.length-1];
+        //拼接得到新的上传文件名
+        String uploadFiletName = fileResource.getObjectName()+ UUID.randomUUID().toString()+"."+suffix;
+        //上传网络需要用的字节流
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            System.err.println("上传文件出现异常");
+        }
+        //执行阿里云上传文件操作
+        ossClient.putObject(fileResource.getBucketName(),uploadFiletName,inputStream);
+        //关闭OSSClient
+        ossClient.shutdown();
+        return uploadFiletName;
     }
 }

@@ -3,6 +3,7 @@ package com.jh.vlog.service;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @ClassName UserService
@@ -38,4 +39,11 @@ public interface UserService {
      * @return
      */
     User updateUser(User user);
+
+    /**
+     * 上传文件到oss
+     * @param file  文件对象
+     * @return  上传后的url
+     */
+    String uploadFile(MultipartFile file);
 }
