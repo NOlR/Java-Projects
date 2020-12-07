@@ -4541,7 +4541,7 @@ var render = function() {
     [
       _c("v-uni-input", {
         staticClass: _vm._$g(1, "sc"),
-        attrs: { type: "text", placeholder: "请输入旧密码", _i: 1 },
+        attrs: { type: "text", placeholder: "请输入新密码", _i: 1 },
         model: {
           value: _vm._$g(1, "v-model"),
           callback: function($$v) {
@@ -4570,7 +4570,12 @@ var render = function() {
             {
               class: _vm._$g(4, "c"),
               staticStyle: { "border-radius": "50rpx", border: "0" },
-              attrs: { type: "primary", _i: 4 }
+              attrs: { type: "primary", _i: 4 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
             },
             [_vm._v("设置")]
           )
