@@ -5,6 +5,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.jh.vlog.mapper.UserMapper;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
+import com.jh.vlog.model.dto.WxLoginDto;
 import com.jh.vlog.model.entity.User;
 import com.jh.vlog.service.RedisService;
 import com.jh.vlog.service.UserService;
@@ -149,5 +150,33 @@ public class UserServiceImpl implements UserService {
         //关闭OSSClient
         ossClient.shutdown();
         return uploadFiletName;
+    }
+
+    @Override
+    public User wxLogin(WxLoginDto wxLoginDto) {
+        User user = null;
+        try {
+            user = userMapper.findUserByOpenId(wxLoginDto.getWxOpenId());
+        } catch (SQLException throwables) {
+            System.err.println("根据微信OpenId查询用户出现异常");
+        }
+        //新用户
+        if (user == null){
+            user = User.builder()
+                    .wxOpenId(wxLoginDto.getWxOpenId())
+                    .nickname(wxLoginDto.getNickname())
+                    .avatar(wxLoginDto.getAvatar())
+                    .gender(wxLoginDto.getGender())
+                    .createTime(LocalDateTime.now())
+                    .build();
+            try {
+                userMapper.insert(user);
+            } catch (SQLException throwables) {
+                System.err.println("新增用户出现异常");
+            }
+        }
+
+        //老用户
+        return user;
     }
 }

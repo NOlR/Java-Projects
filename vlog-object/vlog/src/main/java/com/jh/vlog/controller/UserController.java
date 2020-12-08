@@ -4,6 +4,7 @@ import com.jh.vlog.common.ResponseResult;
 import com.jh.vlog.common.ResultCode;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
+import com.jh.vlog.model.dto.WxLoginDto;
 import com.jh.vlog.model.entity.User;
 import com.jh.vlog.service.RedisService;
 import com.jh.vlog.service.UserService;
@@ -103,5 +104,15 @@ public class UserController {
             path = fileResource.getOssHost() + path;
         }
         return ResponseResult.success(path);
+    }
+
+    @PostMapping(value = "/wxLogin")
+    public ResponseResult wxLogin(@RequestBody WxLoginDto wxLoginDto){
+        log.info("wxLoginDto"+wxLoginDto);
+        User user = userService.wxLogin(wxLoginDto);
+        if (user!=null){
+            return  ResponseResult.success(user);
+        }
+        return ResponseResult.failure(ResultCode.USER_SIGN_IN_FAIL);
     }
 }
