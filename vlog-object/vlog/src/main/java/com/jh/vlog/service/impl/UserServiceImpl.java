@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -98,8 +99,15 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User user) {
         //先查出数据原用户信息
         User savedUser = getUser(user.getPhone());
+        //密码字段，如果是修改密码的请求，需要将传来的密码加密
+        if(!user.getPassword().equals(savedUser.getPassword())){
+            savedUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
+        }
+        else {
+            //否则就是修改其他信息，密码直接赋值以免被覆盖为空
+            savedUser.setPassword(user.getPassword());
+        }
         //相应字段做修改,注意前端传值的时候这些字段如果没有修改也要传原值
-        savedUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
         savedUser.setNickname(user.getNickname());
         savedUser.setAvatar(user.getAvatar());
         savedUser.setGender(user.getGender());

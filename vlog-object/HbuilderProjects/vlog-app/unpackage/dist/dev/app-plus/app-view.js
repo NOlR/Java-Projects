@@ -4541,24 +4541,24 @@ var render = function() {
     [
       _c("v-uni-input", {
         staticClass: _vm._$g(1, "sc"),
-        attrs: { type: "text", placeholder: "请输入新密码", _i: 1 },
+        attrs: { type: "text", placeholder: "输入新密码", _i: 1 },
         model: {
           value: _vm._$g(1, "v-model"),
           callback: function($$v) {
             _vm.$handleVModelEvent(1, $$v)
           },
-          expression: "oldpassword"
+          expression: "newpassword"
         }
       }),
       _c("v-uni-input", {
         staticClass: _vm._$g(2, "sc"),
-        attrs: { type: "text", placeholder: "请输入确认密码", _i: 2 },
+        attrs: { type: "text", placeholder: "输入确认密码", _i: 2 },
         model: {
           value: _vm._$g(2, "v-model"),
           callback: function($$v) {
             _vm.$handleVModelEvent(2, $$v)
           },
-          expression: "newpassword"
+          expression: "renewpassword"
         }
       }),
       _c(
@@ -4568,9 +4568,19 @@ var render = function() {
           _c(
             "v-uni-button",
             {
+              staticClass: _vm._$g(4, "sc"),
               class: _vm._$g(4, "c"),
-              staticStyle: { "border-radius": "50rpx", border: "0" },
-              attrs: { type: "primary", _i: 4 },
+              staticStyle: {
+                "border-radius": "50rpx",
+                border: "0",
+                width: "500rpx",
+                "margin-top": "15rpx"
+              },
+              attrs: {
+                type: "primary",
+                disabled: _vm._$g(4, "a-disabled"),
+                _i: 4
+              },
               on: {
                 click: function($event) {
                   return _vm.$handleViewEvent($event)

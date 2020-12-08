@@ -22,6 +22,12 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void insert(User user)throws SQLException;
 
+    /**
+     * 根据用户手机查询信息
+     * @param phone
+     * @return
+     * @throws SQLException
+     */
     @Select({"<script>",
             "SELECT * FROM t_user ",
             "WHERE 1=1 ",
@@ -31,6 +37,11 @@ public interface UserMapper {
             "</script>"})
     User findUserByPhone(@Param("phone") String phone) throws SQLException;
 
+    /**
+     * 
+     * @param user
+     * @throws SQLException
+     */
     @Update("UPDATE t_user SET password=#{password},nickname=#{nickname},avatar=#{avatar},gender=#{gender},birthday=#{birthday},address=#{address}"+
     "WHERE phone=#{phone}")
     void updataUser(User user) throws SQLException;
