@@ -1,5 +1,6 @@
 package com.jh.vlog.service;
 
+import com.jh.vlog.model.dto.CaptchaLoginDto;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.dto.WxLoginDto;
@@ -54,4 +55,11 @@ public interface UserService {
      * @return
      */
     User wxLogin (WxLoginDto wxLoginDto);
+
+    /**
+     * 验证码登录
+     * @param captchaLoginDto
+     * @return
+     */
+    User captchaLogin(CaptchaLoginDto captchaLoginDto);
 }

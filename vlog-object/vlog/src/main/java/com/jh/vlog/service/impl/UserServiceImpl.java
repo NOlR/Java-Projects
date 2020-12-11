@@ -3,6 +3,7 @@ package com.jh.vlog.service.impl;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.jh.vlog.mapper.UserMapper;
+import com.jh.vlog.model.dto.CaptchaLoginDto;
 import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.dto.WxLoginDto;
@@ -101,10 +102,9 @@ public class UserServiceImpl implements UserService {
         //先查出数据原用户信息
         User savedUser = getUser(user.getPhone());
         //密码字段，如果是修改密码的请求，需要将传来的密码加密
-        if(!user.getPassword().equals(savedUser.getPassword())){
+        if (!user.getPassword().equals(savedUser.getPassword())) {
             savedUser.setPassword(DigestUtils.md5Hex(user.getPassword()));
-        }
-        else {
+        } else {
             //否则就是修改其他信息，密码直接赋值以免被覆盖为空
             savedUser.setPassword(user.getPassword());
         }
@@ -130,14 +130,14 @@ public class UserServiceImpl implements UserService {
         String accessKeyId = aliyunResource.getAccessKeyId();
         String accessKeySecret = aliyunResource.getAccessKeySecret();
         //创建OSSClient实例
-        OSS ossClient = new OSSClientBuilder().build(endpoint,accessKeyId,accessKeySecret);
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
         String fileName = file.getOriginalFilename();
         //分割文件名，获取文件后缀名
-        assert fileName!=null;
+        assert fileName != null;
         String[] fileNameArr = fileName.split("\\.");
-        String suffix = fileNameArr[fileNameArr.length-1];
+        String suffix = fileNameArr[fileNameArr.length - 1];
         //拼接得到新的上传文件名
-        String uploadFiletName = fileResource.getObjectName()+ UUID.randomUUID().toString()+"."+suffix;
+        String uploadFiletName = fileResource.getObjectName() + UUID.randomUUID().toString() + "." + suffix;
         //上传网络需要用的字节流
         InputStream inputStream = null;
         try {
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
             System.err.println("上传文件出现异常");
         }
         //执行阿里云上传文件操作
-        ossClient.putObject(fileResource.getBucketName(),uploadFiletName,inputStream);
+        ossClient.putObject(fileResource.getBucketName(), uploadFiletName, inputStream);
         //关闭OSSClient
         ossClient.shutdown();
         return uploadFiletName;
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService {
             System.err.println("根据微信OpenId查询用户出现异常");
         }
         //新用户
-        if (user == null){
+        if (user == null) {
             user = User.builder()
                     .wxOpenId(wxLoginDto.getWxOpenId())
                     .nickname(wxLoginDto.getNickname())
@@ -178,5 +178,21 @@ public class UserServiceImpl implements UserService {
 
         //老用户
         return user;
+    }
+
+    @Override
+    public User captchaLogin(CaptchaLoginDto captchaLoginDto) {
+        boolean flag=redisService.existsKey(captchaLoginDto.getPhone());
+        if(flag){
+            String saveCode=redisService.getValue(captchaLoginDto.getPhone(),String.class);
+            //验证码一致
+            if(saveCode.equalsIgnoreCase(captchaLoginDto.getCaptcha())){
+                User user=getUser(captchaLoginDto.getPhone());
+                if(user.getPassword().equals(DigestUtils.md5Hex(captchaLoginDto.getPassword()))){
+                    return user;
+                }
+            }
+        }
+        return null;
     }
 }
