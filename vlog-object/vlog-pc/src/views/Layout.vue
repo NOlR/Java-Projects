@@ -26,12 +26,15 @@
         <v-icon>mdi-heart</v-icon>
       </v-btn>
 
-      <v-btn value="nearby" class="accent" @click="$router.push('/my')">
+      <v-btn value="nearby" class="accent mr-12" @click="$router.push('/my')">
         <span>我的</span>
         <v-icon>mdi-map-marker</v-icon>
       </v-btn>
-
+    
       <v-spacer></v-spacer>
+      <v-avatar>
+        <v-img></v-img>
+      </v-avatar>
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>

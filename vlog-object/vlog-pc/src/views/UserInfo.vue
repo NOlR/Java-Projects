@@ -1,58 +1,35 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="4">
-        <v-subheader>昵称</v-subheader>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field
-          label="Name"
-        ></v-text-field>
-      </v-col>
-    </v-row>
- <v-row>
-      <v-col cols="4">
-        <v-subheader>性别</v-subheader>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field
-          label="Gender"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="4">
-        <v-subheader>电话</v-subheader>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field
-          label="Phone"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-
-    <v-row>
-      <v-col cols="4">
-        <v-subheader>地址</v-subheader>
-      </v-col>
-      <v-col cols="8">
-        <v-text-field
-          label="Address"
-        ></v-text-field>
-      </v-col>
-    </v-row>
-
-   
-  </v-container>
+  <form>
+    <img :src="user.avatar" style="width:100px">
+    <v-text-field label="昵称" :value="user.nickname"></v-text-field>
+    <v-text-field label="性别" :value="gendertext"></v-text-field>
+    <v-text-field :counter="11" label="手机号" :value="user.phone"></v-text-field>
+    <v-text-field label="地址" :value="user.address"></v-text-field>
+    <v-btn class="mr-4">
+      submit
+    </v-btn>
+  </form>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+const genderArray = ['保密','男','女']
 export default {
-
+  data: () => {
+    return {
+      
+    }
+  },
+  computed: {
+    ...mapState({
+      loginStatus: (state) => state.loginStatus,
+      user: (state) => state.user
+    }),
+    gendertext(){
+      return genderArray[this.user.gender]
+    }
+  }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
