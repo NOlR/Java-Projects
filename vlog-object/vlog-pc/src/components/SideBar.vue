@@ -2,7 +2,9 @@
   <v-card min-width="320">
     <v-img :src="imgSrc" class="px-3 py-3" ref="img" height="300px" dark>
       <input type="file" @change="change" ref="input" style="display:none" />
-      <v-btn dark icon @click="handleClick"></v-btn>
+      <v-btn dark icon @click="handleClick">
+        <v-icon>mdi-camera</v-icon>
+      </v-btn>
     </v-img>
     <v-row class="mt-4">
       <v-btn class="mx-2" fab dark color="indigo" @click="uploadAvatar">
@@ -74,7 +76,7 @@
           <v-list-item-title>意见反馈</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-            <v-divider inset></v-divider>
+      <v-divider inset></v-divider>
       <v-list-item @click="$router.push('/my/about')">
         <v-list-item-icon>
           <v-icon color="indigo">
@@ -133,10 +135,10 @@ export default {
       switch (this.user.gender) {
         case 0:
           return '保密'
-          
+
         case 1:
           return '男'
-          
+
         case 2:
           return '女'
 
@@ -154,7 +156,7 @@ export default {
     change() {
       const refs = this.$refs
       const elInput = refs.input
-      const elImg =refs.img
+      const elImg = refs.img
       const reader = new FileReader()
       reader.onload = (e) => {
         elImg.src = e.target.result
@@ -166,28 +168,28 @@ export default {
     },
     uploadAvatar() {
       console.log('upload')
-      let formData = new formData()
+      let formData = new FormData()
       formData.append('file', this.file)
       //调用上传文件接口
       this.axios({
-        methods: 'post',
+        method: 'post',
         url: '/user/upload',
-        header: {
-          'Content-Type': 'mutipart/form-data'
+        headers: {
+          'content-Type': 'multipart/form-data'
         },
         data: formData
-      }).then((res)=>{
-        console.log(res.data.data);
-        let newUser=this.user
+      }).then((res) => {
+        console.log(res.data.data)
+        let newUser = this.user
         newUser.avatar = res.data.data
-        this.$store.commit('editUserInfo',newUser)
+        this.$store.commit('editUserInfo', newUser)
         //调用修改用户信息的接口
         this.axios({
-          methods:'post',
-          url:'/user/update',
-          data:newUser
-        }).then((res)=>{
-          console.log(res.data.data);
+          method: 'post',
+          url: '/user/update',
+          data: newUser
+        }).then((res) => {
+          console.log(res.data.data)
           this.imgSrc = this.user.avatar
         })
       })

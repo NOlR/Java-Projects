@@ -5,10 +5,11 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import VueAxios from 'vue-axios'
 import axios from 'axios'
+import VDistpicker from 'v-distpicker'
 axios.defaults.baseURL='http://vue-vlog.cn.utools.club/api'
 
 Vue.config.productionTip = false
-Vue.use(VueAxios,axios)
+Vue.use(VueAxios,axios,VDistpicker)
 new Vue({
   router,
   store,
