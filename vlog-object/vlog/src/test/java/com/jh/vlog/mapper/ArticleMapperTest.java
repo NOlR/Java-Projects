@@ -1,5 +1,6 @@
 package com.jh.vlog.mapper;
 
+import com.github.pagehelper.Page;
 import com.jh.vlog.VlogApplication;
 import com.jh.vlog.model.entity.Article;
 import com.jh.vlog.task.ArticleTask;
@@ -35,7 +36,8 @@ class ArticleMapperTest {
 
     @Test
     void selectAll() {
-        List<Article> articles = articleMapper.selectAll();
-        System.out.println(articles);
+        Page<Article> articlePage = articleMapper.selectAll(1);
+        System.out.println(articlePage.toPageInfo().getList().size());
     }
+
 }

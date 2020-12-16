@@ -1,5 +1,6 @@
 package com.jh.vlog.service;
 
+import com.github.pagehelper.PageInfo;
 import com.jh.vlog.model.entity.Article;
 
 import java.util.List;
@@ -18,8 +19,11 @@ public interface ArticleService {
     void insertArticles(List<Article> articles);
 
     /**
-     * 查询所有数据
-     * @return
+     * 根据用户id查询数据并分页
+     * @param pageNum 页码
+     * @param pageSize  每页数量
+     * @param userId    用户id
+     * @return  返回结果
      */
-    List<Article> selectAll();
+    PageInfo<Article> selectByPage(int pageNum,int pageSize,int userId);
 }

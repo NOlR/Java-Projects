@@ -1,5 +1,8 @@
 package com.jh.vlog.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jh.vlog.mapper.ArticleMapper;
 import com.jh.vlog.mapper.ArticleTagMapper;
 import com.jh.vlog.model.entity.Article;
@@ -37,12 +40,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> selectAll() {
-        List<Article> articles = articleMapper.selectAll();
-        articles.forEach(article -> {
-            List<ArticleTag> articleTags = articleTagMapper.selectByArticleId(article.getId());
-            article.setTagList(articleTags);
-        });
-        return articles;
+    public PageInfo<Article> selectByPage(int pageNum, int pageSize, int userId) {
+        //将参数传给这个方法就可以实现物理分页了，非常简单
+        PageHelper.startPage(pageNum,pageSize);
+        //先根据用户id查到所有数据
+        Page<Article> articlePage = articleMapper.selectAll(userId);
+        //将这些数据作为入参构建出PageInfo(包含了总页数，当前页码，每夜数量，当前页数据List等等一堆属性和方法)
+        return new PageInfo<>(articlePage);
     }
+
 }

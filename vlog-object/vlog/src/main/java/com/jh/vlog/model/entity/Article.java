@@ -30,7 +30,5 @@ public class Article {
     private String url;
     //爬取时间
     private LocalDate publishDate;
-    //系统时间
-    private LocalDateTime createTime;
     private List<ArticleTag> tagList;
 }
