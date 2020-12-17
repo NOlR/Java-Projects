@@ -27,15 +27,16 @@ public class ArticleController {
     @PostMapping("page")
     public ResponseResult getArticlesByPage(@RequestParam(name = "pageNum",defaultValue = "1",required = false)int pageNum,
                                             @RequestParam(name = "pageSize",defaultValue = "9",required = false)int pageSize){
+        return ResponseResult.success(articleService.selectByPage(pageNum,pageSize,getUserId()));
+
+    }
+    public int getUserId(){
         //通过RequestContextHolder来取得请求的request对象
         RequestAttributes at = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) at;
         assert sra !=null;
         HttpServletRequest request = sra.getRequest();
         //取消请求头
-        System.out.println(request.getHeader("userId"));
-        int userId = Integer.parseInt(request.getHeader("userId"));
-        return ResponseResult.success(articleService.selectByPage(pageNum,pageSize,userId));
-
+        return Integer.parseInt(request.getHeader("userId"));
     }
 }

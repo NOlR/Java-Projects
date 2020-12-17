@@ -1,5 +1,5 @@
 <template>
-  
+  <h3>Friend</h3>
 </template>
 
 <script>
