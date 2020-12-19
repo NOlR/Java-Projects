@@ -28,7 +28,9 @@ public class Article {
     private String summary;
     private String content;
     private String url;
-    //爬取时间
     private LocalDate publishDate;
+    private String totalWords;
+    private Integer duration;
+    private Integer pageView;
     private List<ArticleTag> tagList;
 }

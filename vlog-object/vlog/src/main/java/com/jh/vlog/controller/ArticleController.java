@@ -30,6 +30,15 @@ public class ArticleController {
         return ResponseResult.success(articleService.selectByPage(pageNum,pageSize,getUserId()));
 
     }
+    @GetMapping("recommend")
+    public ResponseResult getRecommend(){
+        return ResponseResult.success(articleService.getRecommendArticles(getUserId()));
+    }
+
+    @GetMapping("{id}")
+    public ResponseResult getArticleDatail(@PathVariable String id){
+        return ResponseResult.success(articleService.getDetail(id));
+    }
     public int getUserId(){
         //通过RequestContextHolder来取得请求的request对象
         RequestAttributes at = RequestContextHolder.getRequestAttributes();

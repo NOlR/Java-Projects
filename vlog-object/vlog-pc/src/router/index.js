@@ -46,7 +46,7 @@ const routes = [
       {
         path: 'friend',
         name: 'Friend',
-        component: () => import('../views/Friend.vue')
+        component: () => import('../views/Friend.vue'),
       },
       {
         path: 'my',
@@ -79,6 +79,11 @@ const routes = [
     ]
   },
   {
+    path: '/article/:id',
+    name: 'ArticleDetail',
+    component: () => import('../views/ArticleDetail.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
@@ -105,4 +110,3 @@ const router = new VueRouter({
 })
 
 export default router
-

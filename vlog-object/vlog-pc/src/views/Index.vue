@@ -1,7 +1,7 @@
 <template>
-  <!-- 顶部导航，父组件定位提供容器，引入封装的导航组件 -->
   <v-app>
-    <v-app-bar height="56px" elevation="12" fixed class="nav-transparent">
+    <!-- 顶部导航，父组件定位提供容器，引入封装的导航组件 -->
+    <v-app-bar height="56px" elevation="0" fixed class="nav-transparent">
       <nav-bar></nav-bar>
     </v-app-bar>
     <!-- 主体内容 -->
@@ -10,21 +10,26 @@
         <v-carousel-item v-for="(slide, i) in slides" :key="i">
           <v-sheet height="100%">
             <v-row class="fill-height">
-              <img :src="slide" class="slider-img" width="100%" height="100%" style="opacity:0.5" />
+              <img :src="slide" class="slider-img" width="100%" height="100%" style="opacity:0.5"/>
             </v-row>
           </v-sheet>
         </v-carousel-item>
       </v-carousel>
 
-      <v-row style="width:80%;margin: 0 auto;margin-top:-40px">
-        <v-col cols="12" md="6" v-for="(article, index) in indexList" :key="index">
-          <v-hover v-slot="{ hover }">
-            <v-card class="rounded-lg mask" link :elevation="hover ? 12 : 2" height="500" :class="{ 'on-hover': hover }">
+      <v-row style="width: 80%; margin:0 auto; margin-top:-10px;">
+        <v-col cols="12" md = "6" v-for="(article, index) in indexList" :key="index">
+          <v-hover v-slot="{hover}">
+            <v-card 
+              class="rounded-lg mask" 
+              link
+              :elevation="hover ? 12 : 2" 
+              height="500"
+              :class="{'on-hover':hover}">
               <v-img class="white--text" :src="article.cover" height="100%" style="text-align:center;">
-                <h4 class="light-gery--text my-6 pt-6">{{ article.category }}</h4>
-                <h1 class="mt-6 mask pa-6">{{ article.title }}</h1>
-                <div class="text-md-h6 light-grey--text mt-6 px-12">{{ article.summary }}</div>
-                <v-btn rounded dark elevation="12" class="mt-6 px-12 py-6 purple-btn">
+                <h4 class="light-grey--text my-6 pt-6">{{article.category}}</h4>
+                <h1 class="mt-6 mask pa-6">{{article.title}}</h1>
+                <div class="text-md-h6 light-grey--text mt-6 pa-2 mask display">{{article.summary}}</div>
+                <v-btn rounded dark elevation="12" class="mt-6 px-12 py-6 green-btn" @click="gotoDetail(article.id)">
                   <h3>阅读更多</h3>
                 </v-btn>
               </v-img>
@@ -33,45 +38,65 @@
         </v-col>
       </v-row>
 
-      <v-row style="width:80%;margin:0 auto; margin-top:10px;">
-        <v-col cols="12" md="4" v-for="(article, index) in articles" :key="index">
-          <v-hover v-slot="{ hover }">
-            <v-card class="rounded-lg" link elevation="hover ? 12 : 2" height="550" :class="{ 'on-hover': hover }">
-              <v-img class="white--text align-end" height="55%" :src="article.cover">
-                <h2 class="px-3 mb-6 mask">{{ article.title }}</h2>
+      <v-row style="width:80%; margin:0 auto;margin-top:10px;">
+        <v-col cols="12" md="4" v-for="(article, index) in articles" :key="index" @click="gotoDetail(article.id)">
+          <v-hover v-slot="{hover}">
+            <v-card class="rounded-lg" height="550" link:elevation="hover ? 12 : 2" :class="{'on-hover':hover}">
+              <v-img class="white--text align-end" height="55%" :src="article.cover"> 
+                <h2 class="px-3 mb-6 mask">{{article.title}}</h2>
               </v-img>
               <v-card-text class="text--primary">
-                <div class="grey--text text-md-h6 display">{{ article.summary }}</div>
+                <div class="grey--text text-md-h6 display">
+                  {{article.summary}}
+                </div>
                 <v-row justify="space-between" class="px-3 mt-5 text-md-h6 font-weight-regular">
-                  <span>{{ article.publishDate }}</span>
+                  <span>{{article.publishDate}}</span>
                   <div>
                     <v-icon color="#38485C">
                       mdi-bookmark
                     </v-icon>
-                    <span>{{ article.category }}</span>
+                    <span>{{article.category}}</span>
                   </div>
                 </v-row>
               </v-card-text>
-              <v-divider></v-divider>
               <v-card-actions class="px-3 mt-2">
-                <v-btn class="bg-color mr-1" text v-for="(tag, index) in article.tagList" :key="index">
-                  {{ tag.tagName }}
+                <v-btn class="bgColor mr-1" text v-for="(tag, index) in article.tagList" :key="index">
+                  {{tag.tagName}}
                 </v-btn>
               </v-card-actions>
             </v-card>
           </v-hover>
         </v-col>
       </v-row>
+
       <!-- 分页 -->
       <v-row justify="space-around" class="my-6">
-        <v-btn class="mx-2 grey" fab dark large elevation="12" :class="{ bgColor: pageNum > 1 }" @click="previous">
-          <v-icon drak>
+        <v-btn 
+          class="mx-2 grey" 
+          fab 
+          dark 
+          large 
+          elevation="12" 
+          :class="{bgColor: pageNum > 1}" 
+          @click="previous"
+        >
+          <v-icon dark>
             mdi-less-than
           </v-icon>
         </v-btn>
-        <h2>{{ pageNum }}/{{ pages }}</h2>
-        <v-btn class="mx-2 bgColor" fab dark large elevation="12" :class="{ greyColor: pageNum === pages }" @click="next">
-          <v-icon dark>mdi-greater-than</v-icon>
+        <h2>{{pageNum}}/{{pages}}</h2>
+        <v-btn
+          class="mx-2 bgColor"
+          fab
+          dark
+          large
+          elevation="12"
+          :class="{greyColor: pageNum === pages}"
+          @click="next"
+        >
+          <v-icon dark> 
+            mdi-greater-than
+          </v-icon>
         </v-btn>
       </v-row>
     </v-main>
@@ -84,33 +109,30 @@ import { mapState } from 'vuex'
 import NavBar from '../components/NavBar'
 import MyFooter from '../components/MyFooter'
 export default {
-  components: { NavBar, MyFooter },
   name: 'Index',
   data: () => ({
     pageNum: 1,
     pages: 0,
-    articles: [], //所有文章数组
-    indexList: [], //推荐文章数组
-    slides: [] //轮播图数组
-    // slides: [
-    //   {
-    //     src: 'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/wallpapper/1.jpeg'
-    //   },
-
-    //   {
-    //     src: 'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/wallpapper/2.jpeg'
-    //   },
-    //   {
-    //     src: 'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/wallpapper/3.jpeg'
-    //   },
-    //   {
-    //     src: 'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/wallpapper/4.jpeg'
-    //   },
-    //   {
-    //     src: 'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/wallpapper/5.jpeg'
-    //   }
-    // ]
+    articles: [],   //所有文章数组
+    indexList: [],  //推荐文章数组
+    slides: []      //轮播图数组
+      // {
+      //   src: 'https://share--app.oss-cn-hangzhou.aliyuncs.com/bg/20201214163901.jpeg'
+      // },
+      // {
+      //   src: 'https://share--app.oss-cn-hangzhou.aliyuncs.com/bg/20201214164702.jpeg'
+      // },
+      // {
+      //   src: 'https://share--app.oss-cn-hangzhou.aliyuncs.com/bg/20201214164910.png'
+      // },
+      // {
+      //   src: 'https://share--app.oss-cn-hangzhou.aliyuncs.com/bg/20201214165036.jpeg'
+      // },
   }),
+  components: {
+    NavBar,
+    MyFooter
+  },
   computed: {
     ...mapState({
       loginStatus: (state) => state.loginStatus,
@@ -118,47 +140,56 @@ export default {
     })
   },
   created() {
+    this.getIndexList()
     this.getData()
   },
-  methods: {
-    //根据是否有发布日期过滤出推荐文章
-    recommend(element) {
-      return element.publishDate === null
-    },
-    other(element) {
-      return element.publishDate != null
-    },
-    getData() {
+  methods:{
+    getIndexList(){
       this.axios({
-        method: 'POST',
-        url: '/article/page',
-        params: {
-          pageNum: this.pageNum
-        },
+        method: 'GET',
+        url: '/article/recommend',
         headers: {
           userId: this.user.id
         }
       }).then((res) => {
         console.log(res.data.data)
-        this.articles.splice(0, 9)
-        this.articles = res.data.data.list
-        this.pages = res.data.data.pages
-        this.indexList = this.articles.slice(0, 6)
+        this.indexList = res.data.data
         this.indexList.forEach((element) => {
           this.slides.push(element.cover)
         })
       })
     },
-    next() {
-      if (this.pageNum < this.pages) {
+    getData(){
+      this.axios({
+        method: 'POST',
+        url: '/article/page',
+        params:{
+          pageNum: this.pageNum
+        },
+        headers:{
+          userId: this.user.id
+        }
+      }).then((res) => {
+        console.log(res.data.data)
+        this.articles.splice(0,9)
+        this.articles = res.data.data.list
+        this.pages = res.data.data.pages
+        this.indexList = this.articles.slice(0,6)
+        this.indexList.forEach((element) => {
+          this.slides.push(element.cover)
+        })
+      })
+    },
+    next(){
+      if(this.pageNum < this.pages){
         this.pageNum++
         this.getData()
-      } else {
+      }else{
         this.$layer.alert(
-          '已经是最后一页～',
+          '已经是最后一页了～',
           {
-            title: '提示',
-            icon: 2
+            title:'提示',
+            icon:2  //0,1,2,3
           },
           (layerid) => {
             this.$layer.close(layerid)
@@ -166,22 +197,27 @@ export default {
         )
       }
     },
-    previous() {
-      if (this.pageNum > 1) {
+    previous(){
+      if(this.pageNum > 1){
         this.pageNum--
         this.getData()
-      } else {
+      }else{
         this.$layer.alert(
           '已经是第一页～',
           {
             title: '提示',
-            icon: 2
+            icon: 2 //0,1,2,3
           },
           (layerid) => {
             this.$layer.close(layerid)
           }
         )
       }
+    },
+    gotoDetail(id){
+      this.$router.push({
+        path: '/article/' + id
+      })
     }
   }
 }

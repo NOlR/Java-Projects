@@ -30,23 +30,33 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void insertArticles(List<Article> articles) {
-    articleMapper.insertArticles(articles);
-    assert articles !=null;
-    articles.forEach(article -> {
-    if (article.getTagList()!=null){
-        articleTagMapper.insertArticleTags(article.getTagList());
+        articleMapper.insertArticles(articles);
+        assert articles != null;
+        articles.forEach(article -> {
+            if (article.getTagList() != null) {
+                articleTagMapper.insertArticleTags(article.getTagList());
+            }
+        });
     }
-    });
+
+    @Override
+    public List<Article> getRecommendArticles(int userId) {
+        return articleMapper.getRecommendArticles(userId);
     }
 
     @Override
     public PageInfo<Article> selectByPage(int pageNum, int pageSize, int userId) {
         //将参数传给这个方法就可以实现物理分页了，非常简单
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         //先根据用户id查到所有数据
         Page<Article> articlePage = articleMapper.selectAll(userId);
         //将这些数据作为入参构建出PageInfo(包含了总页数，当前页码，每夜数量，当前页数据List等等一堆属性和方法)
         return new PageInfo<>(articlePage);
+    }
+
+    @Override
+    public Article getDetail(String id) {
+        return articleMapper.getDetail(id);
     }
 
 }
