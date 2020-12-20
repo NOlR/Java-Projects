@@ -10,7 +10,7 @@ export default new Vuex.Store({
       id:1,
       phone:'18796428166',
       password:'607e4e084799b65df76cb7125f616443',
-      nickName:'XiaruoShul',
+      nickname:'XiaruoShul',
       avatar:'https://pic-go-noir.oss-cn-beijing.aliyuncs.com/avatar/179a3ea9-bf09-4a79-b514-2ba73968941b.jpg',
       gender:1,
       birthday:'2020-12-10',

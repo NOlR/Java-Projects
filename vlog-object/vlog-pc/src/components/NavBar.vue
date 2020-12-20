@@ -7,8 +7,8 @@
         </router-link>
       </v-col>
       <v-col cols="12" md="8">
-        <router-link v-for="(item, index) in items" :to="item.path" :key="index" link class="mr-2">
-          <v-btn  text large class="nav-item text-md-h6 white--text">
+        <router-link v-for="(item, index) in items" :to="item.path" :key="index" link class="mr-1">
+          <v-btn  text large class="nav-item text-md-h6 white--text" >
             <v-icon right dark class="mr-2">
               {{item.icon}}
             </v-icon>
@@ -82,6 +82,11 @@ export default {
         icon: 'mdi-alert-circle',
         text: '异常',
         path: '/404'
+      },
+      {
+        icon: 'mdi-pen',
+        text: '写文章',
+        path: '/write'
       }
     ]
   }),
