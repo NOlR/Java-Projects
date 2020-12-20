@@ -1,9 +1,11 @@
 package com.jh.vlog.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.jh.vlog.common.ResponseResult;
 import com.jh.vlog.model.entity.Article;
 import com.jh.vlog.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -11,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @ClassName ArticleCOntroller
@@ -26,19 +29,29 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PostMapping("page")
-    public ResponseResult getArticlesByPage(@RequestParam(name = "pageNum",defaultValue = "1",required = false)int pageNum,
+    public PageInfo<Article> getArticlesByPage(@RequestParam(name = "pageNum",defaultValue = "1",required = false)int pageNum,
                                             @RequestParam(name = "pageSize",defaultValue = "9",required = false)int pageSize){
-        return ResponseResult.success(articleService.selectByPage(pageNum,pageSize,getUserId()));
-
+        PageInfo<Article> articlePageInfo = articleService.selectByPage(pageNum,pageSize,getUserId());
+        if (articlePageInfo == null){
+            throw  new NullPointerException();
+        }
+        return articlePageInfo;
     }
+
+
     @GetMapping("recommend")
-    public ResponseResult getRecommend(){
-        return ResponseResult.success(articleService.getRecommendArticles(getUserId()));
+    public List<Article> getRecommend(){
+        List<Article> rocommengArticles = articleService.getRecommendArticles(getUserId());
+        if (rocommengArticles==null){
+            throw  new NullPointerException();
+        }
+        return rocommengArticles;
     }
 
     @GetMapping("{id}")
-    public ResponseResult getArticleDatail(@PathVariable String id){
-        return ResponseResult.success(articleService.getDetail(id));
+    public Article getArticleDatail(@PathVariable String id){
+        Article detail = articleService.getDetail(id);
+
     }
     public int getUserId(){
         //通过RequestContextHolder来取得请求的request对象
@@ -51,7 +64,7 @@ public class ArticleController {
     }
 
     @PostMapping("post")
-    public Article postArticle(@RequestBody Article article) {
+    public Article postArticle(@RequestBody Article article){
         return articleService.postArticle(article);
     }
 }
