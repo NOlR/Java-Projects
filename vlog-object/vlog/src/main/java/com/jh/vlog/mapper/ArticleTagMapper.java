@@ -33,6 +33,6 @@ public interface ArticleTagMapper {
      * @param articleId
      * @return
      */
-    @Select("SELECT * FROM t_article_tag WHERE article_id=#{articleId} ")
-    List<ArticleTag> selectByArticleId(@Param("articleId")String articleId);
+    @Select("SELECT * FROM t_article_tag WHERE article_id = #{articleId} ")
+    List<ArticleTag> selectByArticleId(@Param(value = "articleId")String articleId);
 }

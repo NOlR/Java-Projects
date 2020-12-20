@@ -13,6 +13,15 @@ import java.util.List;
  * @Date 2020/12/15
  **/
 public interface ArticleMapper {
+
+    /**
+     * 新增文章
+     * @param article
+     */
+    @Insert("INSERT INTO t_article (id,category,user_id,title,cover,summary,content,publish_date,total_words,duration,page_view) "+
+    "VALUES (#{article.id},#{article.category},#{article.userId},#{article.title},#{article.cover},#{article.summary},#{article.content}," +
+            "#{article.publishDate},#{article.totalWords},#{article.duration},#{article.pageView})")
+    void add(@Param("article") Article article);
     @Insert({
             "<script>",
             "INSERT INTO t_article (id,category,user_id,title,cover,summary,content,url,publish_date,total_words,duration,page_view) VALUES ",

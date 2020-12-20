@@ -1,6 +1,7 @@
 package com.jh.vlog.controller;
 
 import com.jh.vlog.common.ResponseResult;
+import com.jh.vlog.model.entity.Article;
 import com.jh.vlog.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +48,10 @@ public class ArticleController {
         HttpServletRequest request = sra.getRequest();
         //取消请求头
         return Integer.parseInt(request.getHeader("userId"));
+    }
+
+    @PostMapping("post")
+    public Article postArticle(@RequestBody Article article) {
+        return articleService.postArticle(article);
     }
 }
