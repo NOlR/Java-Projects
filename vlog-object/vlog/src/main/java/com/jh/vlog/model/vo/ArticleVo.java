@@ -37,5 +37,6 @@ public class ArticleVo {
     private List<ArticleTag> tagList;
     private String nickname;
     private String avatar;
+    private List<CommentVo> commentList;
 
 }

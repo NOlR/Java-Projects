@@ -82,7 +82,7 @@ public interface ArticleMapper {
      * @param id 文章id
      * @return Article详情
      */
-    @Select("SELECT * FROM t_article WHERE id = #{id}")
+    @Select("SELECT a.*,b.nickname,b.avatar FROM t_article a LEFT JOIN t_user b ON a.user_id = b.id  WHERE a.id = #{id}")
     @Results({
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "category", column = "category"),
@@ -95,7 +95,11 @@ public interface ArticleMapper {
             @Result(property = "duration", column = "duration"),
             @Result(property = "pageView", column = "page_view"),
             @Result(property = "tagList", column = "id",
-                    many = @Many(select = "com.jh.vlog.mapper.ArticleTagMapper.selectByArticleId"))
+                    many = @Many(select = "com.jh.vlog.mapper.ArticleTagMapper.selectByArticleId")),
+            @Result(property = "commentList",column = "id",
+                    many = @Many(select = "com.jh.vlog.mapper.CommentMapper.selectByArticleId")),
+            @Result(property = "nickname",column = "nickname"),
+            @Result(property = "avatar",column = "avatar")
     })
-    Article getDetail(@Param(value = "id") String id);
+    ArticleVo getDetail(@Param(value = "id") String id);
 }

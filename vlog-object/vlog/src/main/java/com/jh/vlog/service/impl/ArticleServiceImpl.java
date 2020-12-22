@@ -59,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getDetail(String id) {
+    public ArticleVo getDetail(String id) {
         return articleMapper.getDetail(id);
     }
 
