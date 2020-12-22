@@ -3,6 +3,7 @@ package com.jh.vlog.mapper;
 import com.github.pagehelper.Page;
 import com.jh.vlog.VlogApplication;
 import com.jh.vlog.model.entity.Article;
+import com.jh.vlog.model.vo.ArticleVo;
 import com.jh.vlog.task.ArticleTask;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -36,7 +37,7 @@ class ArticleMapperTest {
 
     @Test
     void selectAll() {
-        Page<Article> articlePage = articleMapper.selectAll(1);
+        Page<ArticleVo> articlePage = articleMapper.selectAll();
         System.out.println(articlePage.toPageInfo().getList().size());
     }
 

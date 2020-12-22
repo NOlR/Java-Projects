@@ -3,6 +3,7 @@ package com.jh.vlog.service;
 import com.github.pagehelper.PageInfo;
 import com.jh.vlog.VlogApplication;
 import com.jh.vlog.model.entity.Article;
+import com.jh.vlog.model.vo.ArticleVo;
 import com.jh.vlog.task.ArticleTask;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,8 @@ class ArticleServiceTest {
         Future<List<Article>> future = executor.submit(articleTask);
         List<Article> articles = null;
         try {
-            articles = future.get();
+            articles = future.get()
+            ;
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -45,13 +47,13 @@ class ArticleServiceTest {
 
     @Test
     void selectByPage() {
-        PageInfo<Article> articlePageInfo = articleService.selectByPage(1,9,1);
+        PageInfo<ArticleVo> articlePageInfo = articleService.selectByPage(1,9);
         System.out.println(articlePageInfo.getList().size());
     }
 
     @Test
     void getRecommendArticles() {
-        List<Article> recommendArticles =articleService.getRecommendArticles(1);
+        List<ArticleVo> recommendArticles =articleService.getRecommendArticles(1);
         recommendArticles.forEach(System.out::println);
     }
 

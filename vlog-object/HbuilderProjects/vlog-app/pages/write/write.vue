@@ -69,7 +69,7 @@ export default {
 			},
 			tags: [],
 			tagList: [],
-			types: ['primary', 'success', 'warning', 'errer']
+			types: ['primary', 'success', 'warning', 'error']
 		};
 	},
 	computed: {

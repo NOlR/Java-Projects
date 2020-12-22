@@ -3,6 +3,7 @@ package com.jh.vlog.controller;
 import com.github.pagehelper.PageInfo;
 import com.jh.vlog.common.ResponseResult;
 import com.jh.vlog.model.entity.Article;
+import com.jh.vlog.model.vo.ArticleVo;
 import com.jh.vlog.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,9 +30,9 @@ public class ArticleController {
     private ArticleService articleService;
 
     @PostMapping("page")
-    public PageInfo<Article> getArticlesByPage(@RequestParam(name = "pageNum",defaultValue = "1",required = false)int pageNum,
+    public PageInfo<ArticleVo> getArticlesByPage(@RequestParam(name = "pageNum",defaultValue = "1",required = false)int pageNum,
                                             @RequestParam(name = "pageSize",defaultValue = "9",required = false)int pageSize){
-        PageInfo<Article> articlePageInfo = articleService.selectByPage(pageNum,pageSize,getUserId());
+        PageInfo<ArticleVo> articlePageInfo = articleService.selectByPage(pageNum,pageSize);
         if (articlePageInfo == null){
             throw  new NullPointerException();
         }
@@ -40,8 +41,8 @@ public class ArticleController {
 
 
     @GetMapping("recommend")
-    public List<Article> getRecommend(){
-        List<Article> rocommengArticles = articleService.getRecommendArticles(getUserId());
+    public List<ArticleVo> getRecommend(){
+        List<ArticleVo> rocommengArticles = articleService.getRecommendArticles(getUserId());
         if (rocommengArticles==null){
             throw  new NullPointerException();
         }

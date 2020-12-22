@@ -3,7 +3,6 @@
     <v-row class="nav-transparent mx-2 pl-12" justify="space-between" align="center">
       <v-col cols="12" md="3">
         <router-link to="/index">
-          <h1 class="grey--text">{{user.nickname}}的博客</h1>
         </router-link>
       </v-col>
       <v-col cols="12" md="8">
@@ -93,7 +92,7 @@ export default {
   computed: {
     ...mapState({
         loginStatus: (state) => state.loginStatus,
-        user: (state) => state.user
+      loginUser: (state) => state.loginUser
     })
   },
   mounted(){
@@ -118,6 +117,9 @@ export default {
       this.$store.commit('logout')
       this.$router.push('/login')
     }
+  },
+  created(){
+    this.items[5].path = '/my/'+this.loginUser.id
   }
 }
 </script>

@@ -7,6 +7,7 @@ import com.jh.vlog.mapper.ArticleMapper;
 import com.jh.vlog.mapper.ArticleTagMapper;
 import com.jh.vlog.model.entity.Article;
 import com.jh.vlog.model.entity.ArticleTag;
+import com.jh.vlog.model.vo.ArticleVo;
 import com.jh.vlog.service.ArticleService;
 import com.jh.vlog.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,16 +44,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getRecommendArticles(int userId) {
-        return articleMapper.getRecommendArticles(userId);
+    public List<ArticleVo> getRecommendArticles(int userId) {
+        return articleMapper.getRecommendArticles();
     }
 
     @Override
-    public PageInfo<Article> selectByPage(int pageNum, int pageSize, int userId) {
+    public PageInfo<ArticleVo> selectByPage(int pageNum, int pageSize) {
         //将参数传给这个方法就可以实现物理分页了，非常简单
         PageHelper.startPage(pageNum, pageSize);
         //先根据用户id查到所有数据
-        Page<Article> articlePage = articleMapper.selectAll(userId);
+        Page<ArticleVo> articlePage = articleMapper.selectAll();
         //将这些数据作为入参构建出PageInfo(包含了总页数，当前页码，每夜数量，当前页数据List等等一堆属性和方法)
         return new PageInfo<>(articlePage);
     }
@@ -64,7 +66,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article postArticle(Article article) {
         article.setCover("https://picsum.photos/1920/1080?random&and="+Math.random());
-        article.setPublishDate(LocalDate.now());
+        article.setCreateTime(LocalDateTime.now());
         article.setTotalWords(DataUtil.getTotalWords());
         article.setDuration(DataUtil.getDuration());
         article.setPageView(DataUtil.getPageView());

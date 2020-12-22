@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lginStatus:false,
-    user:{
+    loginUser:{
       id:1,
       phone:'18796428166',
       password:'607e4e084799b65df76cb7125f616443',
@@ -19,13 +19,17 @@ export default new Vuex.Store({
       signature:'上善若水',
       createTime:'2020-12-08 11:11:11'
 
-    }
+    },
+    user:{}
   },
   mutations: {
     login(state,user){
       state.loginStatue = true
-      state.user = user
-      localStorage.setItem('user',JSON.stringify(user))
+      state.loginUser = user
+      localStorage.setItem('loginUser',JSON.stringify(user))
+    },
+    visit(state,user){
+      state.user  = user
     },
     logout(state){
       state.loginStatue = false;

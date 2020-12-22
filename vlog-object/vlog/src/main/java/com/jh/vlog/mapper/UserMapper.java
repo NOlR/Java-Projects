@@ -48,7 +48,7 @@ public interface UserMapper {
 
     /**
      * 根据微信openid查询用户信息
-     * @param wxOpenid
+     * @param
      * @return
      * @throws SQLException
      */
@@ -60,4 +60,13 @@ public interface UserMapper {
             "</when> ",
             "</script>"})
     User findUserByOpenId(@Param("wxOpenId")String wxOpenId) throws SQLException;
+
+
+    /**
+     * 根据用户id查询信息
+     * @param id
+     * @return
+     */
+    @Select("SELECT id,phone,nickname,avatar,gender,address,birthday,banner,signature FROM t_user WHERE id=#{id}")
+    User getUser(@Param("id") int id);
 }

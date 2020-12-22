@@ -1,13 +1,13 @@
 <template>
   <v-card min-width="320">
-    <v-img :src="imgSrc" class="px-3 py-3" ref="img" height="300px" dark>
+    <v-img :src="user.avatar" class="px-3 py-3" ref="img" height="300px" dark>
       <input type="file" @change="change" ref="input" style="display:none" />
-      <v-btn dark icon @click="handleClick">
+      <v-btn dark icon @click="handleClick" v-if="user.id === loginUser.id">
         <v-icon>mdi-camera</v-icon>
       </v-btn>
     </v-img>
     <v-row class="mt-4">
-      <v-btn class="mx-2" fab dark color="indigo" @click="uploadAvatar">
+      <v-btn class="mx-2" fab dark color="indigo" @click="uploadAvatar" v-if="user.id === loginUser.id">
         <v-icon dark>
           mdi-upload
         </v-icon>
@@ -121,7 +121,8 @@ export default {
   computed: {
     ...mapState({
       loginStatus: (state) => state.loginStatus,
-      user: (state) => state.user
+      loginUser :(state)=>state.loginUser,
+      user:(state)=> state.user
     }),
     avatar: {
       get: function() {

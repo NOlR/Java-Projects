@@ -6,18 +6,21 @@
       color="#fcb69f"
       clipped-left
       dark
-      src="https://pic-go-noir.oss-cn-beijing.aliyuncs.com/bgi/purple-nebula-galaxy-planets-stars-space-39615.jpeg"
+      :src="user.banner"
       height="500"
       >
       <template v-slot:img="{props}">
         <v-img v-bind="props" gradient="to top right,rgba(40,44,52,.6),rgba(211,190,223,.4)"></v-img>
       </template>
+      <v-row justify="center">
+        <v-card-title>
+          <h1>{{user.signature}}</h1>
+        </v-card-title>
+      </v-row>
       </v-app-bar>
     </v-card>
-    <v-main>
-      <v-container class="main-content">
-        <router-view />
-      </v-container>
+    <v-main class="grey lighten-3">
+      <router-view/>
     </v-main>
     <my-footer></my-footer>
   </v-app>
@@ -36,7 +39,8 @@ export default {
   computed:{
         ...mapState({
       loginStatus: (state) => state.loginStatus,
-      user: (state) => state.user
+      loginUser:(state) => state.loginUser,
+      user:(state) =>state.user
     })
   }
 }

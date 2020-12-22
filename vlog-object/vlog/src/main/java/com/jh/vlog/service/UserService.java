@@ -5,6 +5,7 @@ import com.jh.vlog.model.dto.LoginDto;
 import com.jh.vlog.model.dto.PhoneLoginDto;
 import com.jh.vlog.model.dto.WxLoginDto;
 import com.jh.vlog.model.entity.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -62,4 +63,12 @@ public interface UserService {
      * @return
      */
     User captchaLogin(CaptchaLoginDto captchaLoginDto);
+
+    /**
+     * 根据id获取用户信息
+     * @param id
+     * @return
+     */
+    User getUser(@Param("id") int id);
+
 }

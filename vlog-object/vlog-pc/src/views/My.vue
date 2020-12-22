@@ -19,7 +19,17 @@ export default {
   data() {
     return {}
   },
-  created() {},
+  created() {
+    this.id = this.$route.params.id
+    alert('你要访问的用户id为：'+this.id)
+    this.axios({
+      method:'GET',
+      url:'/user/'+this.id
+    }).then((res)=>{
+      console.log(res.data.data.id);
+      this.$store.commit('visit',res.data.data)
+    })
+  },
   methods: {}
 }
 </script>
